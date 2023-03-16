@@ -70,17 +70,6 @@ class Graph:
 
 
 
-    def comp(self,l,lb,lv):
-        if lv==[]:
-            return(l,lb)
-        else:
-            i=lv.pop()
-            if lb[i-1]:
-                lb[i-1]=False
-                b=[a for (a,a2,a3) in self.graph[i]]
-                l.append(i)
-                lv+=b
-            return(self.comp(l,lb,lv))
     def comp(self,lb,cc,n):
         if lb[i-1]:
             cc.append(i)
@@ -94,10 +83,10 @@ class Graph:
         lb=[True for i in range(n)]
         c=[]
         for k in range(1,n+1):
-            l1,l2=self.comp([],lb,[k])
-            lb=l2
-            if l1!=[]:
-                c.append(l1)
+            cc=[]
+            comp(self,lb,cc,k)
+            if lcc!=[]:
+                c.append(cc)
         return(c)
 
     def connected_components_set(self):
