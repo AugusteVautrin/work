@@ -81,6 +81,13 @@ class Graph:
                 l.append(i)
                 lv+=b
             return(self.comp(l,lb,lv))
+    def comp(self,lb,cc,n):
+        if lb[i-1]:
+            cc.append(i)
+            lb[i-1]=False
+            b=[a for (a,a2,a3) in self.graph[i]]
+            for k in b:
+                comp(self,lb,cc,k)
 
     def compco(self):
         n=self.nb_nodes
@@ -290,7 +297,8 @@ g = graph_from_file(data_path + file_name)
 def Q14(graph,n1,n2):
     g=kruskal(graph)
     parents={}
-    profondeurs={1:0}
+    racine=graph.nb_nodes//2
+    profondeurs={racine:0}
     def remplissage_dictonnaire(n):
         if not(n1 in parents and n2 in parents):
             for arete in g.graph[n]:
@@ -298,30 +306,31 @@ def Q14(graph,n1,n2):
                     parents[arete[0]]=(n,arete[1])
                     profondeurs[arete[0]]=profondeurs[n]+1
                     remplissage_dictonnaire(arete[0])
-    remplissage_dictonnaire(1)
-    chemin=[]
+    remplissage_dictonnaire(racine)
+    chemin=[n1,n2]
     poids=[]
     while profondeurs[n1]!=profondeurs[n2]:
-        if profondeurs[n1]>profondeurs[n2]:
-            chemin.insert(0,parents[n2][0])
+        if profondeurs[n1]<profondeurs[n2]:
+            if parents[n2][0]!=n1:
+                chemin.insert(1,parents[n2][0])
             poids.append(parents[n2][1])
             n2=parents[n2][0]
-        elif profondeurs[n1]<profondeurs[n2]:
-            chemin.insert(0,parents[n1])
-            n2=parents[n1][0]
+        elif profondeurs[n1]>profondeurs[n2]:
+            if parents[n1][0]!=n2:
+                chemin.insert(-1,parents[n1][0])
+            n1=parents[n1][0]
     while n1!=n2:
         k=chemin.index(n1)
         if parents[n2][0]!= parents[n1][0]:
             chemin.insert(k+1,parents[n2][0])
             chemin.insert(k+1,parents[n1][0])
-            poids.append(parents[n2][1])
-            poids.append(parents[n1][1])
+        else:
+            chemin.insert(k+1,parents[n1][0])
+        poids.append(parents[n2][1])
+        poids.append(parents[n1][1])
         n1=parents[n1][0]
         n2=parents[n2][0]
-    k=chemin.index(n1)
-    chemin.insert(k+1,parents[n1][0])
-    poids.append(parents[n1][1])
-    p=min(poids)
+    p=max(poids)
     return(p,chemin)
 
 Q14(g,2,1)
