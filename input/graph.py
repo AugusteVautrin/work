@@ -70,7 +70,7 @@ class Graph:
 
 
 
-    def comp(self,lb,cc,n):
+    def comp(self,lb,cc,i):
         if lb[i-1]:
             cc.append(i)
             lb[i-1]=False
